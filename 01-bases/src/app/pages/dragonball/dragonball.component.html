@@ -1,0 +1,52 @@
+<h1>Dragon Ball Page</h1>
+<hr>
+<section class="row">
+    <div class="col-12 col-sm-6">
+        <h3>Agregar:</h3>
+        <input 
+        type="text" 
+        class="form-control" 
+        placeholder="Nombre..." 
+        
+        [value]="name()" 
+        (change)="name.set(textName.value)"
+        #textName
+
+        />
+        <input 
+        type="number" 
+        class="form-control" 
+        placeholder="Unidades..."
+        
+        [value]="power()"
+        (change)="power.set(+textPower.value)"
+        #textPower
+        
+        >
+        <button class="mt-2 btn btn-primary" (click)="addCharacter()">Agregar</button>
+    </div>
+    <div class="col-12 col-sm-6">
+        <h3>Listado</h3>
+        <ul>
+            @for (character of characters(); track character.id; let idx = $index) {
+
+                @if(character.power > 500){
+                    <li>
+                    <span>{{ idx+1 }} - {{ character.name }}</span>
+                    <strong 
+                    [class.text-danger]="character.power > 9000"
+                    [class.text-primary]="character.power < 9000"
+                    > ({{ character.power }})</strong>
+
+                    <!-- * Usando una senal computada -->
+                    <!-- <strong 
+                    [ngClass]="powerClass()"
+                    > ({{ character.power }})</strong> -->
+                </li>
+                } @else {
+                    <strong>Este personaje no es poderoso (seguramente sea Yamcha)</strong>
+                }
+            }
+        </ul>
+    </div>
+</section>

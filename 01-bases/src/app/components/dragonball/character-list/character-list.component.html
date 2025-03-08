@@ -1,0 +1,22 @@
+<h3>{{ listname() }}</h3>
+<ul>
+  @for (character of charactersSignal(); track character.id; let idx = $index) {
+  @if(character.power > 500){
+  <li>
+    <span>{{ idx + 1 }} - {{ character.name }}</span>
+    <strong
+      [class.text-danger]="character.power > 9000"
+      [class.text-primary]="character.power < 9000"
+    >
+      ({{ character.power }})</strong
+    >
+
+    <!-- * Usando una senal computada -->
+    <!-- <strong 
+    [ngClass]="powerClass()"
+    > ({{ character.power }})</strong> -->
+  </li>
+  } @else {
+  <strong>Este personaje no es poderoso (seguramente sea Yamcha)</strong>
+  } }
+</ul>
