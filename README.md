@@ -9,3 +9,4 @@
     ```
     npm install @angular/cli --save-dev
     ```
+- Para mayor seguridad, renombrar el archivo environment.example.ts al clonar:
