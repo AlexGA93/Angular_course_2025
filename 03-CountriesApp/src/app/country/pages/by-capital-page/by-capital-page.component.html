@@ -1,0 +1,7 @@
+<!-- SECCION DE BUSQUEDA -->
+<country-search-input 
+    [receivedPlaceholder]="'Search by capital'"
+    (searchInput)="searchByCapital($event)" 
+/>
+<!-- SECCION DE TABLA -->
+<country-list [countries]="countries()" />
