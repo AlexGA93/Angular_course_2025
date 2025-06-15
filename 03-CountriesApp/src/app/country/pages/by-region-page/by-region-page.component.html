@@ -1,1 +1,21 @@
-<country-list [recievedListCountries]="[]"/>
+<h1 class="text-2xl">Por Region</h1>
+<h3 class="text-lg">Seleccione una region</h3>
+
+<section class="region-buttons row mt-2">
+    @for(region of regions; track $index) {
+        <button 
+        class="region-button btn btn-primary mx-2 w-[100px]"
+        [class.btn-success]="selectedRegion() === region"
+        (click)="selectedRegion.set(region)"
+        >
+            {{ region }}
+        </button>
+    }
+</section>
+
+<country-list 
+    [recievedListCountries]="countrysResource.value() ?? []"
+    [errorMessage]="countrysResource.error()"
+    [isEmpty]="countrysResource.value()?.length === 0"
+    [isLoading]="countrysResource.isLoading()"
+/>

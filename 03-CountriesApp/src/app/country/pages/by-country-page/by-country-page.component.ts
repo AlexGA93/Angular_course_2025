@@ -1,9 +1,10 @@
-import { Component, inject, input, resource, signal } from '@angular/core';
+import { Component, inject, input, linkedSignal, resource, signal } from '@angular/core';
 import { CountrySearchInputComponent } from '../../components/country-search-input/country-search-input.component';
 import { CountryListComponent } from '../../components/country-list/country-list.component';
 import { CountryServiceService } from '../../services/country-service.service';
 import { firstValueFrom, of } from 'rxjs';
 import { rxResource } from '@angular/core/rxjs-interop';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-by-country-page',
@@ -15,9 +16,17 @@ import { rxResource } from '@angular/core/rxjs-interop';
 export class ByCountryPageComponent {
   // inyectamos el servicio
   countryService = inject(CountryServiceService);
+  // inyectamos el ActivatedRoute y Router para manejar la navegacion
+  activatedRoute = inject(ActivatedRoute);
+  // inyectamos el Router para manejar la navegacion
+  router = inject(Router);
   
-  // input para el valor de busqueda
-  query = signal<string>('');
+    // almacenamos los parametros de la ruta
+  queryParams: string = this.activatedRoute.snapshot.queryParamMap.get('query') ?? '';
+
+  // * Creamos una senal que se va a actualizar cada vez que el usuario escriba algo
+  // * linkedSignal nos permite crear una señal que se actualiza automaticamente cuando cambia el valor de la señal a la que esta vinculada
+  query     = linkedSignal<string>(() => this.queryParams);
 
   // creamos un recurso para manejar la busqueda
   // countrysResource = resource({
@@ -36,6 +45,12 @@ export class ByCountryPageComponent {
     request: () => ({ query: this.query() }),
     loader:  ({ request }) => {
     if (!request.query) return of([]);
+
+    // actualizamos la url
+    this.router.navigate(['/country/by-country'], {
+      queryParams: { query: request.query }
+    });
+
       return this.countryService.searchByCountry(request.query);
     }
   });
