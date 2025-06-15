@@ -1,1 +1,14 @@
-<p>country-page works!</p>
+@if( countryRsource.error() ) {
+    <app-not-found />
+}
+
+@if(countryRsource.isLoading()) {
+    <div class="flex justify-center items-center h-screen">
+        <app-loading-gif />
+    </div>
+}
+
+@if( countryRsource.hasValue() ) {
+    <app-country-information [country]="countryRsource.value()" />
+    <!-- <pre>{{ countryRsource.value() | json }}</pre> -->
+}

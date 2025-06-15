@@ -1,35 +1,60 @@
 <section class="mt-5">
    <table class="table table-md mt-2 w-full">
-      <thead>
+     <thead>
+       <tr>
          <th>#</th>
-         <th>Icon</th>
-         <th>Flag</th>
-         <th>Name</th>
+         <th>Ícono</th>
+         <th>Bandera</th>
+         <th>Nombre</th>
          <th>Capital</th>
-         <th>Population</th>
+         <th>Población</th>
          <th></th>
-      </thead>
-      <tbody>
-         @for (country of countries(); track country.cca2; let index = $index) {
-            <tr>
-                <td>{{ index + 1 }}</td>
-                <td><img
-                    [src]="country.flag"
-                    [alt]=`country_flag_${index}`
-                 /></td>
-                <td>
-                   <img
-                      [src]="country.flags.svg"
-                      [alt]="country.name.common"
-                      class="w-10 h-10"
-                   />
-                </td>
-                <td>{{ country.name.common }}</td>
-                <td>{{ country.capital }}</td>
-                <td>{{ country.population }}</td>
-                <td><a class="link-primary cursor-pointer">Details</a></td>
-             </tr>
-         }
-      </tbody>
+       </tr>
+     </thead>
+     <tbody>
+      @for(country of recievedListCountries(); track country.cca2; let index = $index;) {
+        <tr>
+          <td>{{ index + 1 }}</td>
+          <td>{{ country.flag }}</td>
+          <td>
+            <img [src]="country.flagSvg" alt="{{ country.name }}" class="w-8 h-8">
+          </td>
+          <td>{{ country.name }}</td>
+          <td>{{ country.capital }}</td>
+          <td>
+            <span class="badge badge-secondary">
+              {{ country.population | number }}
+            </span>
+          </td>
+          <td>
+            <a [routerLink]="['/country/by', country.cca2]" class="link-primary cursor-pointer">Mas Informacion</a>
+          </td>
+        </tr>
+      }
+
+      @if (errorMessage()) {
+        <tr>
+          <td colspan="8" class="text-center text-danger">
+            {{ errorMessage() }}
+          </td>
+        </tr>
+      }
+
+      @if (recievedListCountries().length === 0 && !isLoading()) {
+        <tr>
+          <td colspan="8" class="text-center">
+            No se encontraron paises
+          </td>
+        </tr>
+      }
+
+      @if (isLoading()) {
+        <tr>
+          <td colspan="8" class="text-center">
+            Cargando paises...
+          </td>
+        </tr>
+      }
+     </tbody>
    </table>
-</section>
+ </section>

@@ -1,7 +1,13 @@
-<!-- SECCION DE BUSQUEDA -->
+<!-- country-search-input -->
 <country-search-input 
-    [receivedPlaceholder]="'Search by capital'"
-    (searchInput)="searchByCapital($event)" 
+placeholder="Buscar por capital" 
+(value)="query.set($event)"
 />
-<!-- SECCION DE TABLA -->
-<country-list [countries]="countries()" />
+
+<!-- country-list -->
+<country-list 
+    [recievedListCountries]="countrysResource.value() ?? []"
+    [errorMessage]="countrysResource.error()"
+    [isEmpty]="countrysResource.value()?.length === 0"
+    [isLoading]="countrysResource.isLoading()"
+/>

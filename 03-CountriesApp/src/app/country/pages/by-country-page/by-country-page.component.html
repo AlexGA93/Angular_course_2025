@@ -1,7 +1,12 @@
-<!-- SECCION DE BUSQUEDA -->
+<!-- country-search-input -->
 <country-search-input 
-    [receivedPlaceholder]="'Search by country'"
-    (searchInput())="receivedValue()" 
+(value)="query.set($event)"
+placeholder="Buscar por pais" />
+
+<!-- country-list -->
+<country-list 
+    [recievedListCountries]="countrysResource.value() ?? []"
+    [errorMessage]="countrysResource.error()"
+    [isEmpty]="countrysResource.value()?.length === 0"
+    [isLoading]="countrysResource.isLoading()"
 />
-<!-- SECCION DE TABLA -->
-<country-list />
