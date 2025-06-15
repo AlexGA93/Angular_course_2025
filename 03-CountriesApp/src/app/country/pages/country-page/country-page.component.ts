@@ -9,7 +9,7 @@ import { JsonPipe } from '@angular/common';
 
 @Component({
   selector: 'app-country-page',
-  imports: [NotFoundComponent, LoadingGifComponent, CountryInformationComponent, JsonPipe],
+  imports: [NotFoundComponent, LoadingGifComponent, CountryInformationComponent],
   templateUrl: './country-page.component.html',
   styles: ``
 })
