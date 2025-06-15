@@ -1,0 +1,25 @@
+<!-- 
+
+| Clase          | Significado                                                                                    |
+| -------------- | ---------------------------------------------------------------------------------------------- |
+| `m-auto`       | Aplica `margin: auto` en todos los lados — centra horizontal y verticalmente en ciertos casos. |
+| `flex`         | Convierte el `<main>` en un **contenedor flexbox**.                                            |
+| `flex-grow`    | Hace que `<main>` crezca para ocupar el espacio disponible dentro del contenedor padre.        |
+| `flex-col`     | Cambia la dirección de los elementos hijos a **columna** (en vez de fila por defecto).         |
+| `min-h-screen` | Establece una **altura mínima igual a la altura de la pantalla** (`100vh`).                    |
+-->
+<main class="m-auto flex flex-grow flex-col min-h-screen">
+    <router-outlet/>
+    
+    <!-- * separador que permite tener el footer abajo siempre -->
+    <!-- 
+    
+    | Clase          | Significado                                                                                    |
+    | -------------- | ---------------------------------------------------------------------------------------------- |
+    | `flex-1`       | le da flex-grow: 1, flex-shrink: 1 y flex-basis: 0 → se expande para ocupar espacio disponible.|
+    | `flex-grow`    | Hace que `<main>` crezca para ocupar el espacio disponible dentro del contenedor padre.        
+    -->
+    <div class="flex-1 flex-grow"></div>
+
+    <app-footer />
+</main>
