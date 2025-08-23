@@ -1,0 +1,119 @@
+<h2>Reactivos: <small> Dinámicos </small></h2>
+<hr />
+
+<form autocomplete="off" [formGroup]="myForm" (ngSubmit)="onSubmit()">
+   <!-- Nombre -->
+   <div class="mb-3 row">
+      <label class="col-sm-3 col-form-label">Nombre</label>
+      <div class="col-sm-9">
+         <input
+            class="form-control"
+            placeholder="Nombre de la persona"
+            formControlName="name"
+         />
+        
+        @if (formUtils.isValidField(myForm, "name")) {
+            <span class="form-text text-danger">
+                <!-- llamamos a la funcion que opera con los mensajes en funcion de las validaciones -->
+                {{ formUtils.getFieldError(myForm, "name") }}
+            </span>
+        }
+      </div>
+   </div>
+
+   <!-- Agregar Favorito -->
+   <div class="mb-3 row">
+      <label class="col-sm-3 col-form-label">Agregar</label>
+      <div class="col-sm-9">
+         <div class="input-group">
+            <!-- TENEMOS QUE ASOCIARLO A LA PROPIEDAD DE LA CLASE -->
+             <!-- ! con el (keydown.enter)="$event.preventDefault()" prevenimos que al pulsar el enter tambien se efectue la propagacion del formulario cuando no lo deseamos -->
+            <input 
+            class="form-control" 
+            placeholder="Agregar favorito" 
+            [formControl]="newFavoriteGame"
+            (keydown.enter)="onAddToFavoriteGames()"
+            (keydown.enter)="$event.preventDefault()"
+            />
+            <button 
+            class="btn btn-outline-primary" 
+            type="button"
+            (click)="onAddToFavoriteGames()"
+            >
+               Agregar favorito
+            </button>
+         </div>
+      </div>
+   </div>
+
+   <!-- Lista de Juegos Favoritos -->
+   <div class="mb-3 row">
+      <label class="col-sm-3 col-form-label">Favoritos</label>
+
+      <!-- * Establecemos en el elemento que engloba la iteracion el parametro formArrayName y lo enlazamos con el campo del formulario que tramita el array de textos -->
+      <div class="col-sm-9" formArrayName="favoriteGames">
+         <!-- 
+        Iteramos tantos elementos como elementos tiene el campo de formulario
+        Para ello, usamos la funcion get del componente de typescript 
+        -->
+         @for( favoriteGame of favoriteGames.controls; track $index; let i = $index ) {
+         <div class="mb-1">
+            <div class="input-group">
+               
+               <!-- * Dado que tratamos con los elementos de un array, en el parametro formControlName debemos atribuirle el indice, pues es lo unico que hace referencia a cada elemento del array -->
+                <input class="form-control" [formControlName]="i"/>
+
+               <button 
+               class="btn btn-outline-danger" 
+               type="button" 
+               (click)="deleteFavoriteGame(i)"
+               >
+                  Eliminar
+               </button>
+            </div>
+
+
+            @if (formUtils.isValidFieldInArray(favoriteGames, i)) {
+                <span class="form-text text-danger">
+                    <!-- llamamos a la funcion que opera con los mensajes en funcion de las validaciones -->
+                    {{ formUtils.getFieldErrorInArray(favoriteGames, i) }}
+                </span>
+            }
+         </div>
+         }
+
+        @if (formUtils.isValidField(myForm, "favoriteGames")) {
+            <span class="form-text text-danger">
+                Debe tener al menos 2 juegos
+            </span>
+        }
+      </div>
+   </div>
+
+   <div class="row">
+      <div class="col-sm-12">
+         <button type="submit" class="btn btn-primary float-end">
+            <!-- [disabled]="myForm.invalid" -->
+            Guardar
+         </button>
+      </div>
+   </div>
+</form>
+
+<span>Valid</span>
+<pre>{{ myForm.valid| json }}</pre>
+<br />
+
+<span>Pristine</span>
+<pre>{{ myForm.pristine | json }}</pre>
+
+<span>Touched</span>
+<pre>{{ myForm.touched | json }}</pre>
+
+<span>Value</span>
+<pre>{{ myForm.value | json }}</pre>
+<br />
+
+<span>Agregar Juego</span>
+<pre>{{ myForm.controls['favoriteGames'].errors | json }}</pre>
+<pre>{{ myForm.controls['favoriteGames'].value | json }}</pre>
