@@ -1,0 +1,19 @@
+<section class="m-9">
+    <h1 class="text-3xl font-bold font-montserrat">Todos los Productos: <span class="text-secondary font-pacifico">{{ gender() }}</span></h1>
+<h2 class="text-2xl font-pacifico mb-3">Para todos los gustos</h2>
+
+<hr>
+
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 mt-2 gap-3">
+    @for(product of productsResource.value()?.products; track product; let i = $index) {
+        <product-card [product]="product"/>
+    }
+
+    <!-- empty -->
+     @empty {
+        <p>No hay productos</p>
+     }
+</div>
+
+
+</section>
