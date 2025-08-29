@@ -1,0 +1,44 @@
+/* To learn more about Typescript configuration file: https://www.typescriptlang.org/docs/handbook/tsconfig-json.html. */
+/* To learn more about Angular compiler options: https://angular.dev/reference/configs/angular-compiler-options. */
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    // definimos para path alias
+    "baseUrl": "./",
+    "paths": {
+      // ruta principal - si la dejamos el resto de alias sera nenglobados por esta dado que es la raiz
+      // "@/*":["./src/app/*"],
+      // ruta autenticacion
+      "@auth/*":["./src/app/auth/*"],
+      // ruta dashboard admin
+      "@dashboard/*":["./src/app/admin-dashboard/*"],
+      // ruta productos
+      "@products/*":["./src/app/products/*"],
+      // rutas shared
+      "@shared/*":["./src/app/shared/*"],
+      // rutas store-front
+      "@store-front":["./src/app/store-front/*"]
+    },
+
+    "outDir": "./dist/out-tsc",
+    "strict": true,
+    "noImplicitOverride": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "skipLibCheck": true,
+    "isolatedModules": true,
+    "esModuleInterop": true,
+    "experimentalDecorators": true,
+    "moduleResolution": "bundler",
+    "importHelpers": true,
+    "target": "ES2022",
+    "module": "ES2022"
+  },
+  "angularCompilerOptions": {
+    "enableI18nLegacyMessageIdFormat": false,
+    "strictInjectionParameters": true,
+    "strictInputAccessModifiers": true,
+    "strictTemplates": true
+  }
+}

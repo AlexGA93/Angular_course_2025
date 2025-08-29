@@ -1,0 +1,23 @@
+<!-- loader -->
+@if(productResource.isLoading()) {
+    <div class="flex justify-center items-center h-screen">
+        <front-loader />
+    </div>
+}
+<!-- contenido -->
+@else if(productResource.hasValue()){
+    <div class="m-9 grid grid-cols-1 sm:grid-cols-2 gap-x-20">
+        
+        <!-- informacion -->
+        <div class="mt-5">
+            <h1 class="text-5xl font-bold font-montserrat">{{ productResource.value().title }}</h1>
+            <div class="divider divider-secondary">Descripcion</div>
+            <p>{{ productResource.value().description }}</p>
+        </div>
+
+        <!-- imagenes -->
+         <div class="mt-5">
+            <product-carousel [images]="productResource.value().images" />
+         </div>
+    </div>
+}

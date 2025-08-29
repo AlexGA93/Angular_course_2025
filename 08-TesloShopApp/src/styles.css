@@ -1,0 +1,29 @@
+@import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Pacifico&family=Montserrat+Alternates:wght@400;700&display=swap');
+
+/* You can add global styles to this file, and also import other style files */
+@import "tailwindcss";
+
+/*  aplicamos al tema las fuentes importadas de la url asignandolas a una clase */
+
+@theme {
+  --font-montserrat: "Montserrat Alternates", sans-serif;
+  --font-pacifico: "Pacifico", serif;
+}
+
+/* DaisyUI plugin */
+@plugin "daisyui" {
+    themes: light --default, sunset --prefersdark, cupcake;
+}
+
+/* Tailwind utilities (reemplaza @tailwind components y utilities) */
+@tailwind utilities;
+
+
+@keyframes fadeIn {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+.fade-in-slow {
+  animation: fadeIn 0.5s ease-in forwards;
+}
