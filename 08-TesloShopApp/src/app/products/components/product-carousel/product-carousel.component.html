@@ -6,7 +6,7 @@
         <!-- Slides -->
         @for(image of images(); track image;) {
         <div class="swiper-slide">
-            <img class="rounded-4xl w-full h-full object-cover" [src]="image | productImage" [alt]="image" />
+            <img class="rounded-4xl w-full h-full object-cover fade-in-slow" [src]="image | productImage" [alt]="image" />
         </div>
         }
     </div>

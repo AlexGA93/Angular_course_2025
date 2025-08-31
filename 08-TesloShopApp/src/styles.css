@@ -1,6 +1,14 @@
 @import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Pacifico&family=Montserrat+Alternates:wght@400;700&display=swap');
 
+
+:root {
+  --blue-light: #476E86;
+  --blue-dark: #121C22;
+}
+
+
+
 /* You can add global styles to this file, and also import other style files */
 @import "tailwindcss";
 
@@ -26,4 +34,13 @@
 }
 .fade-in-slow {
   animation: fadeIn 0.5s ease-in forwards;
+}
+
+/* colors */
+.bg-blue-light {
+  background-color: var(--blue-light);
+}
+
+.bg-blue-dark {
+  background-color: var(--blue-dark);
 }
