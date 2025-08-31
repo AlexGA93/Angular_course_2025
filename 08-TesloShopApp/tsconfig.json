@@ -17,7 +17,7 @@
       // rutas shared
       "@shared/*":["./src/app/shared/*"],
       // rutas store-front
-      "@store-front":["./src/app/store-front/*"]
+      "@store-front/*":["./src/app/store-front/*"]
     },
 
     "outDir": "./dist/out-tsc",

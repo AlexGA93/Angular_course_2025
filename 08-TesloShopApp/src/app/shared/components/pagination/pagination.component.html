@@ -1,0 +1,25 @@
+<div class="join flex justify-center items-center mt-4 mb-10">
+    @for(page of getPagesList(); track page) {
+        <!-- 
+        - Boton el cual sera marcado si nos encontramos en la pagina actual. Es decir que la pagina es la isma que en la que nos encontramos
+
+        - Asociamos una redireccion a la misma pagina(url) en la que nos encontramos para asignar los 'query parameters'. Esto provoca que la url tenga query parameters con el atributo page conel valor del indice del array pulsado
+
+        - asociamos un evento de click a una actualizacion de una 'linkedSignal' la cual tiene el valor del input signal
+
+        -->
+        <button 
+        class="join-item btn"
+        [class.btn-secondary]="page === activePage()"
+        [routerLink]="[]"
+        [queryParams]="{ page }"
+        (click)="activePage.set(page)"
+        >
+        {{ page }}
+    </button>
+    }
+
+    @empty {
+        <h1 class="font-pacifico text-2xl text-secondary"><strong>No hay mas paginas de productos</strong></h1>
+    }
+</div>
