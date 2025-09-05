@@ -4,6 +4,7 @@
 
 :root {
   --blue-light: #476E86;
+  --blue-neutral: #193343;
   --blue-dark: #121C22;
 }
 
@@ -41,6 +42,22 @@
   background-color: var(--blue-light);
 }
 
+.color-blue-light {
+  color: var(--blue-light);
+}
+
+.bg-blue-neutral {
+  background-color: var(--blue-neutral);
+}
+
+.color-blue-neutral {
+  color: var(--blue-neutral);
+}
+
 .bg-blue-dark {
   background-color: var(--blue-dark);
+}
+
+.color-blue-dark {
+  color: var(--blue-dark);
 }

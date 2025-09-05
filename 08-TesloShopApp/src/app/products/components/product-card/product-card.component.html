@@ -1,10 +1,10 @@
-<div class="card bg-base-100 shadow-sm fade-in-slow">
+<div class="card bg-base-100 shadow-sm fade-in-slow bg-blue-neutral ">
   <figure>
     <img
       [src]="product().images | productImage"
       [alt]="product().title" />
   </figure>
-  <div class="card-body">
+  <div class="card-body min-h-[200px]">
     <h2 class="card-title text-accent font-montserrat text-2xl cursor-pointer" [routerLink]="['/product',product().slug]">{{ product().title }}</h2>
     <p>{{ product().desc | slice: 0:70 }} ...</p>
     <div class="card-actions justify-end">
