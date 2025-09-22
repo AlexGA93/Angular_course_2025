@@ -41,7 +41,7 @@ export class ProductsService {
     // mappeamos la respuesta por lo que usamos RxJs para interceptar y operar con la respuesta
     .pipe(
       map((productsResponse: ProductsResponse) => ({...productsResponse, products: ProductMapper.mapProductsToMappedProducts(productsResponse.products)})),
-      tap((resp) => console.log(resp)),
+      // tap((resp) => console.log(resp)),
       // cuando hagamos la peticion y tengamos la informacion, la guardamos en cache
       tap((resp) => this.productsCache.set(key, resp))
     )
