@@ -1,5 +1,5 @@
   // expresion regular para patron del email
-  export const emailPattern: string | RegExp = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/;
+  export const emailPattern: string | RegExp = /^[a-zA-Z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/;
   /**
  * ^                      - Inicio de cadena
  * [a-z0-9._%+-]+         - Parte local del email (antes del @). Permite letras minúsculas, números y caracteres especiales: . _ % + -

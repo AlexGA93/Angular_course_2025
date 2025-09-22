@@ -1,23 +1,191 @@
-<form [formGroup]="myForm">
-    <label class="input">
-      <svg
-         xmlns="http://www.w3.org/2000/svg"
-         viewBox="0 0 16 16"
-         fill="currentColor"
-         class="h-4 w-4 opacity-70"
-      >
-         <path
-            d="M2.5 3A1.5 1.5 0 0 0 1 4.5v.793c.026.009.051.02.076.032L7.674 8.51c.206.1.446.1.652 0l6.598-3.185A.755.755 0 0 1 15 5.293V4.5A1.5 1.5 0 0 0 13.5 3h-11Z"
-         />
-         <path
-            d="M15 6.954 8.978 9.86a2.25 2.25 0 0 1-1.956 0L1 6.954V11.5A1.5 1.5 0 0 0 2.5 13h11a1.5 1.5 0 0 0 1.5-1.5V6.954Z"
-         />
-      </svg>
-      <input
-         type="search"
-         class="grow"
-         placeholder="Email"
-         formControlName="email"
+<form class="flex flex-col gap-2" [formGroup]="myForm" (ngSubmit)="onSubmit()">
+  <label class="input">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke-width="1.5"
+      stroke="currentColor"
+      class="size-6"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z"
       />
-   </label>
+    </svg>
+
+    <input
+      type="text"
+      class="grow"
+      placeholder="Full Name"
+      formControlName="fullName"
+    />
+  </label>
+  <!-- * ERROR GENERAL -->
+  @if (formUtils.isValidField(myForm, "fullName")) {
+  <span class="form-text text-secondary">
+    <!-- llamamos a la funcion que opera con los mensajes en funcion de las validaciones -->
+    <strong>{{ formUtils.getFieldError(myForm, "fullName") }}</strong>
+  </span>
+  }
+  <label class="input">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 16 16"
+      fill="currentColor"
+      class="h-4 w-4 opacity-70"
+    >
+      <path
+        d="M2.5 3A1.5 1.5 0 0 0 1 4.5v.793c.026.009.051.02.076.032L7.674 8.51c.206.1.446.1.652 0l6.598-3.185A.755.755 0 0 1 15 5.293V4.5A1.5 1.5 0 0 0 13.5 3h-11Z"
+      />
+      <path
+        d="M15 6.954 8.978 9.86a2.25 2.25 0 0 1-1.956 0L1 6.954V11.5A1.5 1.5 0 0 0 2.5 13h11a1.5 1.5 0 0 0 1.5-1.5V6.954Z"
+      />
+    </svg>
+    <input
+      type="search"
+      class="grow"
+      placeholder="Email"
+      formControlName="email"
+    />
+  </label>
+  @if(myForm.pending && myForm.controls['email'].touched) {
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    class="mt-2"
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+  >
+    <path
+      fill="currentColor"
+      d="M10.14,1.16a11,11,0,0,0-9,8.92A1.59,1.59,0,0,0,2.46,12,1.52,1.52,0,0,0,4.11,10.7a8,8,0,0,1,6.66-6.61A1.42,1.42,0,0,0,12,2.69h0A1.57,1.57,0,0,0,10.14,1.16Z"
+    >
+      <animateTransform
+        attributeName="transform"
+        dur="0.75s"
+        repeatCount="indefinite"
+        type="rotate"
+        values="0 12 12;360 12 12"
+      />
+    </path>
+  </svg>
+  }
+  <!-- * ERROR GENERAL -->
+  @if (formUtils.isValidField(myForm, "email")) {
+  <span class="form-text text-secondary">
+    <!-- llamamos a la funcion que opera con los mensajes en funcion de las validaciones -->
+    <strong>{{ formUtils.getFieldError(myForm, "email") }}</strong>
+  </span>
+  }
+  <label class="input">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 16 16"
+      fill="currentColor"
+      class="h-4 w-4 opacity-70"
+    >
+      <path
+        fill-rule="evenodd"
+        d="M14 6a4 4 0 0 1-4.899 3.899l-1.955 1.955a.5.5 0 0 1-.353.146H5v1.5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5v-2.293a.5.5 0 0 1 .146-.353l3.955-3.955A4 4 0 1 1 14 6Zm-4-2a.75.75 0 0 0 0 1.5.5.5 0 0 1 .5.5.75.75 0 0 0 1.5 0 2 2 0 0 0-2-2Z"
+        clip-rule="evenodd"
+      />
+    </svg>
+    <input
+      [type]="togglePassword()"
+      class="grow"
+      placeholder="Password"
+      formControlName="password"
+    />
+  </label>
+  <label class="input">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 16 16"
+      fill="currentColor"
+      class="h-4 w-4 opacity-70"
+    >
+      <path
+        fill-rule="evenodd"
+        d="M14 6a4 4 0 0 1-4.899 3.899l-1.955 1.955a.5.5 0 0 1-.353.146H5v1.5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5v-2.293a.5.5 0 0 1 .146-.353l3.955-3.955A4 4 0 1 1 14 6Zm-4-2a.75.75 0 0 0 0 1.5.5.5 0 0 1 .5.5.75.75 0 0 0 1.5 0 2 2 0 0 0-2-2Z"
+        clip-rule="evenodd"
+      />
+    </svg>
+    <input
+      [type]="togglePassword()"
+      class="grow"
+      placeholder="Confirm Password"
+      formControlName="password"
+    />
+  </label>
+  <!-- * ERROR GENERAL -->
+  @if (formUtils.isValidField(myForm, "password")) {
+  <span class="form-text text-danger">
+    <!-- llamamos a la funcion que opera con los mensajes en funcion de las validaciones -->
+    {{ formUtils.getFieldError(myForm, "password") }}
+  </span>
+  }
+
+  <label class="label text-secondary font-pacifico">
+    <input
+      type="checkbox"
+      [checked]="showPassword()"
+      class="checkbox"
+      (change)="showHidePassword($event)"
+    />
+    Mostrar Password
+  </label>
+  <!-- * ERROR GENERAL -->
+  @if (formUtils.isValidField(myForm, "confirmPassword")) {
+  <span class="form-text text-danger">
+    <!-- llamamos a la funcion que opera con los mensajes en funcion de las validaciones -->
+    {{ formUtils.getFieldError(myForm, "confirmPassword") }}
+  </span>
+  } @if (myForm.errors && myForm.touched) {
+  <span class="form-text text-danger">
+    {{ formUtils.getTextError(myForm.errors) }}
+  </span>
+  }
+
+  <button class="btn btn-secondary text-white">
+   Register
+   @if(this.loading()) {
+         <p>...cargando</p>
+      }
+  </button>
+
+  <p class="color-blue-neutral">
+    Si ya tienes cuenta, puedes loguearte
+    <a routerLink="/auth/" class="text-secondary font-pacifico" href=""
+      >aqui</a
+    >
+  </p>
 </form>
+
+@if (hasError()) {
+   <app-alert [message]="generalErrorMessage()" />
+}
+
+<!-- <h5>fullName</h5>
+<pre>{{ myForm.controls["fullName"].errors | json }}</pre>
+<h5>Email</h5>
+<pre>{{ myForm.controls["email"].errors | json }}</pre>
+
+<h2>Form touched</h2>
+<pre>{{ myForm.touched | json }}</pre>
+
+<h2>Form Valid:</h2>
+<pre>{{ myForm.valid | json }}</pre>
+
+<h2>Form Value:</h2>
+<pre>{{ myForm.value | json }}</pre>
+
+<h2>Form Status:</h2>
+<pre>{{ myForm.status | json }}</pre>
+
+<h2>Form Pending:</h2>
+<pre>{{ myForm.pending | json }}</pre>
+
+<h2>Form errors</h2>
+<pre>{{ myForm.errors | json }}</pre> -->

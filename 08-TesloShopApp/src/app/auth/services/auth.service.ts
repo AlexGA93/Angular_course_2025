@@ -1,7 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { computed, inject, Injectable, signal } from "@angular/core";
 import { rxResource } from "@angular/core/rxjs-interop";
-import { AuthStatus, LoginResponse } from "@auth/interfaces/auth.interface";
+import { AuthStatus, LoginResponse, RegisterResponse } from "@auth/interfaces/auth.interface";
 import { User } from "@auth/interfaces/user.interface";
 import {
   deleteToLocalStorage,
@@ -95,6 +95,26 @@ export class AuthService {
         map((resp) => this.handleAuthSuccess(resp)),
         catchError((error: any) => this.handleAuthError(error))
       );
+  }
+
+  // funcion para registrar un nuevo usuario
+  register(fullName: string, email: string, password: string): Observable<boolean> {
+    return (
+      this.http
+        .post<RegisterResponse>(`${this._baseUrl}/auth/register`, {
+          fullName,
+          email,
+          password,
+        })
+        // actualizamos posteriormente con la informacion de la respuesta las signals
+        .pipe(
+          // * vamos a cambiar la respuesta del registro por la suscripcion a un booleano
+          // en primer lugar vamos a mapear el caso en el que todo vaya bien devolviendo un true como resultado de la funcion refactorizada
+          map((resp) => this.handleAuthSuccess(resp)),
+          // en el caso de que haya un error usamso el catchError de rxjs para devolver el observable del falso y, de paso, seteamos los ajustes al caso correspondiente
+          catchError((error: any) => this.handleAuthError(error))
+        )
+    );
   }
 
   logout() {

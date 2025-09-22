@@ -63,6 +63,9 @@ export class FormUtils {
 
                return `El valor introducido no tiene el formato correcto`;
 
+            case "fullName": 
+               return "El nombre de usuario debe tener el formato correcto"
+
             case "email":
                return "EL email debe tener el formato correcto";
 
