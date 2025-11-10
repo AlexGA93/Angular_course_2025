@@ -1,4 +1,4 @@
-<div class="join flex justify-center items-center mt-4 mb-10">
+<div class="join flex justify-center items-center">
     @for(page of getPagesList(); track page) {
         <!-- 
         - Boton el cual sera marcado si nos encontramos en la pagina actual. Es decir que la pagina es la isma que en la que nos encontramos
@@ -22,4 +22,14 @@
     @empty {
         <h1 class="font-pacifico text-2xl text-secondary"><strong>No hay mas paginas de productos</strong></h1>
     }
+
+    <select class="select select-bordered w-32 mx-2"
+    #selectPerPage
+    (change)="onProductsPerPageChange($event)"
+    >
+        <option value="10">10</option>
+        <option value="20">20</option>
+        <option value="50">50</option>
+        <option value="100">100</option>
+    </select>
 </div>

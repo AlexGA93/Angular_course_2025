@@ -22,7 +22,7 @@ export const storeFrontRoutes: Routes = [
             },
             // pagina de producto pasandole el producto en la ruta
             {
-                path: 'product/:idSlug',
+                path: 'product /:idSlug',
                 component: ProductPageComponent
             },
             // ! En caso de que no pongamos una ruta valida, redireccionamos a pagina 'Not Found'

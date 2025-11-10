@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { isAdminGuard } from '@auth/guards/is-admin.guard';
 import { notAuthenticatedGuard } from '@auth/guards/not-authenticated.guard';
 
 export const routes: Routes = [
@@ -10,6 +11,11 @@ export const routes: Routes = [
         canMatch: [
             notAuthenticatedGuard
         ]
+    },
+    // path para usuarioss admin
+    {
+        path: 'admin',
+        loadChildren: () => import('./admin-dashboard/admin-dashboard.routes'),
     },
     // path vacio deberia ser el ultimo para que pase primero por las demas rutas
     {

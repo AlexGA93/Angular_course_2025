@@ -30,7 +30,7 @@ export class AuthService {
   private _user = signal<User | null>(null);
   // token
   private _token = signal<string | null>(getFromLocalStorage('token'));
-
+  
   // * Tan pronto inicialice el servicio vamos a llamar a la funcion que comprueba si hay un token y, de haberlo, vamos a pedir otro para evitar que este caduque
   checkStatusResource = rxResource({
     loader: () => this.checkStatus(),
@@ -53,6 +53,9 @@ export class AuthService {
 
   // getter para el token
   token = computed<string | null>(() => this._token());
+
+  // getter para saber si el usuario es admin
+  isAdmin = computed<boolean>(() => this._user()?.roles.includes("admin") ?? false);
 
   // functions
   login(email: string, password: string): Observable<boolean> {

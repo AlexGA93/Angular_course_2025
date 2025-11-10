@@ -65,4 +65,24 @@ export class ProductsService {
       tap((product) => this.productCache.set(idSlug, product))
     )
   }
+
+  getProductById(id: string): Observable<MappedProduct> {
+
+    // comprobamos si tiene los mismos valores
+    if(this.productCache.has(id)) {
+      // devolvemos el objetocon la informacion almacenada en cache en lugar de hacer la peticion
+      return of(this.productCache.get(id)!);
+    }
+    return this.http.get<Product>(`${this._baseUrl()}/products/${id}`)
+    .pipe(
+      // en caso de que no venga con ninguna imagen devolvemos un array vacio
+      map(product => ({ ...product, images: product.images ?? [], desc: product.description })),
+      // delay(2000),
+      // tap(result => console.log(result)),
+      // cuando hagamos la peticion y tengamos la informacion, la guardamos en cache
+      tap((product) => this.productCache.set(id, product))
+    )
+  }
+
+
 }

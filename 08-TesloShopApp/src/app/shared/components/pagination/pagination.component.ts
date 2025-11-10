@@ -1,4 +1,4 @@
-import { Component, computed, input, linkedSignal } from '@angular/core';
+import { Component, computed, EventEmitter, input, linkedSignal, output, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
 @Component({
@@ -10,6 +10,8 @@ export class PaginationComponent {
   // declaramos dos inputs con los datos del backend necesarios
   pages       = input<number>(0);
   currentPage = input<number>(1);
+  // output para enviarel valor del select
+  productsPerPageChange = output<number>();
   
   // signals
   activePage = linkedSignal(this.currentPage);
@@ -18,4 +20,11 @@ export class PaginationComponent {
   getPagesList = computed(() => {
     return Array.from({ length: this.pages() }, (_, i) => i+1);
   });
+
+  //funcion que recoje el valor del select y lo emite
+  onProductsPerPageChange(event: Event) {
+    const selectElement = event.target as HTMLSelectElement;
+    const selectedValue = Number(selectElement.value);
+    this.productsPerPageChange.emit(selectedValue);
+  }
 }
