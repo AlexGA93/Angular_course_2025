@@ -1,3 +1,4 @@
+import { User } from "@auth/interfaces/user.interface";
 import { Gender, Size, Tag } from "./product.interface";
 
 export interface MappedProductsResponse {
@@ -11,12 +12,12 @@ export interface MappedProduct {
     id:          string;
     title:       string;
     price:       number;
-    desc: string;
+    desc:        string;
     slug:        string;
     stock:       number;
     sizes:       Size[];
     gender:      Gender;
     tags:        Tag[];
     images:      string[];
-    // user:        User;
+    user?:        User;
 }

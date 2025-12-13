@@ -12,6 +12,8 @@
     (productsPerPageChange)="onProductsPerPageChange($event)"
 />
 
+<button class="m-2 p-2 btn btn-primary" routerLink="/admin/products/new">Nuevo Producto</button>
+
 <!-- Listado de Productos -->
 <product-table [products]="getRxResourceProducts()"></product-table>
 

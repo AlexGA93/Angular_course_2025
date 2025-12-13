@@ -1,10 +1,26 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
+import { User } from '@auth/interfaces/user.interface';
 import { MappedProduct, MappedProductsResponse } from '@products/interfaces/mapped-product.interface';
-import { Product, ProductOptions, ProductsResponse } from '@products/interfaces/product.interface';
+import { Gender, Product, ProductOptions, ProductsResponse } from '@products/interfaces/product.interface';
 import { ProductMapper } from '@products/mappers/product.mapper';
 import { delay, map, Observable, of, tap } from 'rxjs';
 import { environment } from 'src/environments/environment.development';
+
+// construimos un objeto de producto vacio
+const emptyProduct : MappedProduct = {
+  id: 'new',
+  title: '',
+  price: 0,
+  desc: '',
+  slug: '',
+  stock: 0,
+  sizes: [],
+  gender: Gender.Men,
+  tags: [],
+  images: [],
+  user: {} as User
+};
 
 @Injectable({
   providedIn: 'root'
@@ -55,6 +71,7 @@ export class ProductsService {
       // devolvemos el objetocon la informacion almacenada en cache en lugar de hacer la peticion
       return of(this.productCache.get(idSlug)!);
     }
+
     return this.http.get<Product>(`${this._baseUrl()}/products/${idSlug}`)
     .pipe(
       // en caso de que no venga con ninguna imagen devolvemos un array vacio
@@ -67,6 +84,11 @@ export class ProductsService {
   }
 
   getProductById(id: string): Observable<MappedProduct> {
+
+    // primera comprobacion pro si fuera un nuevo producto
+    if(id === 'new') {
+      return of(emptyProduct);
+    }
 
     // comprobamos si tiene los mismos valores
     if(this.productCache.has(id)) {
@@ -84,5 +106,36 @@ export class ProductsService {
     )
   }
 
+  updateProduct(id: string, productLike: Partial<MappedProduct>):Observable<MappedProduct> {
+    // console.log("Updating product...", productLike);
+    return this.http.patch<MappedProduct>(`${this._baseUrl()}/products/${id}`, productLike)
+    .pipe(
+      tap(product => this.updateProductCache(product))
+    )
+  }
+
+  // funcion para actualizar la cache a la hora de actualizar un producto
+  updateProductCache(product: MappedProduct) {
+    // obtenemos el id del producto
+    const productId = product.id;
+
+    // actualizamos el cache de producto
+    this.productCache.set(productId, product);
+
+    // actualizamos el cache de productos
+    this.productsCache.forEach(productResponse => {
+      // sustituimos el producto actualizado en el array de productos
+      productResponse.products = productResponse.products.map(currentProduct => currentProduct.id === productId ? product : currentProduct);
+    });
+  }
+
+  createProduct(productLike: MappedProduct): Observable<MappedProduct> {
+    console.log({productLike});
+    
+    return this.http.post<MappedProduct>(`${this._baseUrl()}/products`, productLike)
+    .pipe(
+      tap(product => this.updateProductCache(product))
+    );
+  }
 
 }
