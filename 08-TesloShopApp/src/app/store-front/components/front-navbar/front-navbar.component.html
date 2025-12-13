@@ -81,6 +81,11 @@
     </ul>
   </div>
   <div class="navbar-end gap-4">
+
+    @if(authService.isAdmin()){
+      <a routerLink="/admin" class="btn txt-accent">Admin Panel</a>
+    }
+    
     <div class="m-2">
       <!-- Si estamos autenticados mostramos el nombre del usuario -->
       @if(authService.authStatus() === 'authenticated'){

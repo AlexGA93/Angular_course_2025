@@ -9,7 +9,9 @@ const baseUrl: string = environment.baseUrl;
 export class ProductImagePipe implements PipeTransform {
 
   // En esta pipe vamos a comprobar que se nos pase o bien el arreglo de nombres de imagenes o una sola. Puede que no llegue ninguna, por lo que deberemos asociar la imagen de assets como placeholder en caso de que no venga foto alguna
-  transform(value: string | string[]): string {
+  transform(value: null | string | string[]): string {
+
+    if(!value) return './assets/images/no-image.jpg';
     
     if( typeof value === 'string' ) return `${baseUrl}/files/product/${value}`;
 

@@ -9,7 +9,7 @@ import { emailPattern, passwordPattern } from '@utils/regular-expressions';
 
 @Component({
   selector: 'app-register-page',
-  imports: [ReactiveFormsModule, AlertComponent, JsonPipe],
+  imports: [ReactiveFormsModule, AlertComponent],
   templateUrl: './register-page.component.html',
 })
 export class RegisterPageComponent {

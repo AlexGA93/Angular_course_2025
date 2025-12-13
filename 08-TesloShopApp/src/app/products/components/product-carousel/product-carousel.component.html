@@ -8,6 +8,12 @@
         <div class="swiper-slide">
             <img class="rounded-4xl w-full h-full object-cover fade-in-slow" [src]="image | productImage" [alt]="image" />
         </div>
+        } @empty {
+            <div class="swiper-slide">
+            <img class="rounded-4xl w-full h-full object-cover fade-in-slow" 
+            [src]="null | productImage" 
+            alt='Producto' />
+        </div>
         }
     </div>
     <!-- If we need pagination -->
