@@ -1,4 +1,11 @@
-import { Component, inject, input, OnInit, signal } from "@angular/core";
+import {
+  Component,
+  computed,
+  inject,
+  input,
+  OnInit,
+  signal,
+} from "@angular/core";
 import { MappedProduct } from "@products/interfaces/mapped-product.interface";
 import { ProductCarouselComponent } from "@products/components/product-carousel/product-carousel.component";
 import { constants } from "@utils/constants";
@@ -35,7 +42,7 @@ export class ProductDetailsComponent implements OnInit {
     price: [1, [Validators.required, Validators.min(1)]],
     stock: [1, [Validators.required, Validators.min(1)]],
     sizes: [[""]],
-    tags: [""],
+    tags: [[]],
     images: [[]],
     gender: [
       "men",
@@ -44,6 +51,14 @@ export class ProductDetailsComponent implements OnInit {
   });
 
   wasSaved = signal<boolean>(false);
+
+  tempImages = signal<string[]>([]);
+  imageFileList = signal<FileList | undefined>(undefined);
+  // creamos una signal para almacenar tanto las imagenes del producto como la lista de las imagenes subidas por el usuario para pasarselas al carousel
+  imagesToCarousel = computed(() => [
+    ...this.product().images,
+    ...this.tempImages(),
+  ]);
 
   sizes: string[] = [
     constants.COMMON.SIZES.XS,
@@ -64,8 +79,11 @@ export class ProductDetailsComponent implements OnInit {
 
     // seteamos los valores del formulario con los valores del objeto parcial de producto pasado como argumento
     // this.productForm.patchValue(formLike as any);
-    // para los tags, unimos el array en una cadena separada por comas
-    this.productForm.patchValue({ tags: formLike.tags?.join(",") });
+    // si existen tags las colocamos como array; si no, array vacío
+    this.productForm.patchValue({
+      ...(formLike as any),
+      tags: formLike.tags ?? [],
+    });
   }
 
   onSizeChange(size: string) {
@@ -76,15 +94,44 @@ export class ProductDetailsComponent implements OnInit {
       currentSizes.push(size);
     }
     this.productForm.patchValue({ sizes: currentSizes });
-    console.log(this.productForm.value);
-    
   }
 
   // funciones
+
+  /**
+   * @description Metodo para tramitar imagenes subidas del formulario de producto
+   * @param $event Evento de cambio de archivos
+   * @return void
+   */
+  onFilesChanged(event: Event) {
+    // obtenemos las imagenes del elemento input
+    const filesList = (event.target as HTMLInputElement).files;
+
+    // asignamos los valores de filesList al signal imageFileList
+    this.imageFileList.set(filesList ?? undefined);
+
+    // limpieza del array de las urls de imagenes
+    this.tempImages.set([]);
+
+    // console.log({ filesList });
+    if (!filesList) return;
+
+    // si tenemos archivos queremos crear las urls de las imagenes para mostrarlas
+    const imageUrls = Array.from(filesList ?? []).map((file) =>
+      URL.createObjectURL(file)
+    );
+
+    // almacenamos el array de urls de las imagenes subidas en el signal tempImages
+    this.tempImages.set(imageUrls);
+  }
+
+  /**
+   * @description Metodo para tramitar el envio del formulario de producto
+   * @param event Evento de envio del formulario
+   * @returns Promesa de subida de imagenes
+   */
   async onSubmit() {
     const isValid = this.productForm.valid;
-    console.log({isValid});
-    
 
     // marcamos todos los elementos del formulario como tocados
     this.productForm.markAllAsTouched();
@@ -93,11 +140,29 @@ export class ProductDetailsComponent implements OnInit {
 
     // obtenemos los valores del formulario
     const formValue = this.productForm.value;
-    console.log({formValue});
-    
 
-    // retornamos los valores del formulario, pero con los tags como un array de strings
-    const productLike: MappedProduct = { ...(formValue as any) };
+    // normalizamos tags a un array de strings (soporta array, string coma-separado o vacío)
+
+    const rawTags: unknown = formValue.tags ?? [];
+    let tagsArray: string[] = [];
+    if (Array.isArray(rawTags)) {
+      tagsArray = (rawTags as any[])
+        .map((t: any) => String(t).trim())
+        .filter(Boolean);
+    } else if (typeof rawTags === "string") {
+      tagsArray = (rawTags as string)
+        .split(",")
+        .map((t) => t.trim())
+        .filter(Boolean);
+    } else {
+      tagsArray = [];
+    }
+
+    const productLike: MappedProduct = {
+      ...(formValue as any),
+      tags: tagsArray,
+    };
+
     /**
      * * Necesitamos disparar el wasSaved despues de que se tenga la respuesta de la peticion HTTP.
      * Para ello, tratamos la logica como promesas
@@ -105,7 +170,12 @@ export class ProductDetailsComponent implements OnInit {
     // condicion si es producto nuevo o no
     if (this.product().id === "new") {
       // recibe un observable y regresa una promesa con el primer valor emitido
-      const product = await firstValueFrom(this.ps.createProduct(productLike));
+      const product = await firstValueFrom(
+        this.ps.createProduct(productLike, this.imageFileList())
+      );
+
+      console.log({ product });
+
       // console.log({ product });
       // redirigimos al usuario a la pagina de edicion del nuevo producto
       this.router.navigate(["admin/products", product.id]);
@@ -117,7 +187,13 @@ export class ProductDetailsComponent implements OnInit {
       //   this.router.navigate(['admin/products', product.id]);
       // });
     } else {
-      await firstValueFrom(this.ps.updateProduct(this.product().id,productLike));
+      await firstValueFrom(
+        this.ps.updateProduct(
+          this.product().id,
+          productLike,
+          this.imageFileList()
+        )
+      );
 
       // this.ps
       // .updateProduct(this.product().id, productLike)
