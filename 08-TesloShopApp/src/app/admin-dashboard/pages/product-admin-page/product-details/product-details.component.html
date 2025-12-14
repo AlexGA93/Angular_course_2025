@@ -140,9 +140,29 @@
       </button>
     </div>
 
-    <product-carousel [images]="product().images" />
+    <!-- <product-carousel [images]="product().images" /> -->
+    <!-- vsersion con la signal computada para incluir las imagenes que el usuario sube -->
+     <product-carousel [images]="imagesToCarousel()" />
 
-    <input type="file" class="file-input file-input-bordered w-full mt-4" />
+    <!-- 
+    Input de tipo archivo 
+    elegimos opcion multiple para elegir varias de una sola vez
+    solo queremos subir imagenes, por lo que no ponemos accept="image/*"
+    utlizamos el metodo change para llamar a una funcion para previsualizar las imagenes
+    -->
+    <input 
+      type="file" 
+      multiple
+      accept="image/*"
+      class="file-input file-input-bordered w-full mt-4" 
+      (change)="onFilesChanged($event)"
+      />
+
+    <div class="grid grid-cols-4 gap-2 mt-4">
+      @for(image of tempImages(); track $index){
+        <img [src]="image" [alt]="'temporal-image_'+$index" class="rounded-2xl gap-2">
+      }
+    </div>
   </div>
 </form>
 
