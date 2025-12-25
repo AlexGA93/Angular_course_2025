@@ -1,5 +1,5 @@
 import { HttpClient } from "@angular/common/http";
-import { computed, inject, Injectable, signal } from "@angular/core";
+import {computed, inject, Injectable, signal, WritableSignal} from "@angular/core";
 import { rxResource } from "@angular/core/rxjs-interop";
 import { AuthStatus, LoginResponse, RegisterResponse } from "@auth/interfaces/auth.interface";
 import { User } from "@auth/interfaces/user.interface";
@@ -15,21 +15,21 @@ import { environment } from "src/environments/environment.development";
   providedIn: "root",
 })
 export class AuthService {
-  getAuthToken() {
+  getAuthToken(): void {
       throw new Error("Method not implemented.");
   }
   // inyectamos el servicio http
-  private http = inject(HttpClient);
+  private http: HttpClient = inject(HttpClient);
 
   // base url
   private _baseUrl: string = environment.baseUrl;
 
   // declaramos un signal de estado de autenticacion seteado a checking or defecto porque no sabemos si el usuario esta logueado al cargar la pagina
-  private _authStatus = signal<AuthStatus>("checking");
+  private _authStatus:WritableSignal<AuthStatus> = signal<AuthStatus>("checking");
   // user
-  private _user = signal<User | null>(null);
+  private _user: WritableSignal<User | null> = signal<User | null>(null);
   // token
-  private _token = signal<string | null>(getFromLocalStorage('token'));
+  private _token: WritableSignal<string | null> = signal<string | null>(getFromLocalStorage('token'));
   
   // * Tan pronto inicialice el servicio vamos a llamar a la funcion que comprueba si hay un token y, de haberlo, vamos a pedir otro para evitar que este caduque
   checkStatusResource = rxResource({

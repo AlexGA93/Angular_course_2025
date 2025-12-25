@@ -6,7 +6,7 @@ import { emailPattern, fullNamePattern, notOnlySpaces, passwordPattern } from '.
 
 @Component({
   selector: 'app-register-page',
-  imports: [JsonPipe, ReactiveFormsModule],
+  imports: [ReactiveFormsModule],
   templateUrl: './register-page.component.html',
   styles: ``
 })
